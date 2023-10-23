@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Head from 'next/head';
-
+import Link from 'next/link';
 import styles from '../styles/Home.module.css';
 
 function createTitle(title) {
@@ -34,6 +34,9 @@ export default function HomePage() {
             <Header title="React 💙" />
             <main>
                 <div>Homepage!</div>
+                <p>
+                    Read <Link href="/posts/first-post">this page!</Link>
+                </p>
                 <ul>
                     {names.map((name, key) => (
                         <li data-id={key} key={key}>{name}</li>
