@@ -93,8 +93,6 @@ export default function HomePage() {
                             Search users
                         </Button>   
                     </div>
-
-                   
                     
                     <Spacer y={8}/>
        
@@ -105,12 +103,12 @@ export default function HomePage() {
                         <>
                             {users.map(u => (
                                 <User
-                                src={u.image}
+                                key={u.id}
+                                avatarProps={{
+                                    src: `${u.image}`
+                                }}
                                 name={`${u.firstName}${u.lastName}`}
                                 description={u.email}
-                                size="lg"
-                                bordered
-                                color="gradient"
                                 />
                             ))
                             }
