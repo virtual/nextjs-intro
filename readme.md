@@ -14,3 +14,7 @@ View site on http://localhost:3000/
 - View API at http://localhost:3000/api/graphql 
 - Use `shift + spacebar` to autofill query 
 - Use `ctrl + enter` to run query
+
+## Styling
+
+- Uses NextUI v2 (using Tailwind): https://nextui.org/docs/components/button 

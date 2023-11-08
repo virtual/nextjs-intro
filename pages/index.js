@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Layout, {siteTitle} from "../components/layout";
 import Link from 'next/link';
 import { Button, Input, Spinner, Skeleton } from "@nextui-org/react";
+import {User, Spacer} from "@nextui-org/react";
 import styles from '../styles/Home.module.css';
 import utilStyles from '../styles/utils.module.css';
 import { useLazyQuery, useQuery } from '@apollo/client';
@@ -74,22 +75,28 @@ export default function HomePage() {
                 <section className={utilStyles.headingMd}>
                     <p>Mister Cat likes to read books about dogs and birds.</p>
                 </section>
+
+                <Spacer y={10}/>
                 <main>
-                    <h2>Search for a user</h2>             
-                    <Input
-                        clearable
-                        labelPlaceholder="User"
-                        onClearClick={() => setUsers(usersRef.current)}
-                        initialValue={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
-                        />
-                    <Button color="primary" onClick={() => searchUser()}>
-                        Search users
-                    </Button>   
-                    <p>
-                        Read <Link href="/posts/first-post">this page!</Link>
-                    </p>
-                    <ul>
+                    <div className="flex w-full flex-nowrap md:flex-nowrap">        
+                        <Input
+                            size="sm"
+                            clearable
+                            onClearClick={() => setUsers(usersRef.current)}
+                            initialValue={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                            label="Search for a user"
+                            labelPlacement="inside"
+                            placeholder="First or last name"
+                            />
+                        <Button color="primary" size="lg" onClick={() => searchUser()}>
+                            Search users
+                        </Button>   
+                    </div>
+
+                   
+                    
+                    <Spacer y={8}/>
        
                     {loading
                         ?
@@ -97,16 +104,24 @@ export default function HomePage() {
                         :
                         <>
                             {users.map(u => (
-                                <li data-id={u.id}>
-                                    {u.firstName} {u.lastName}
-                                </li>
+                                <User
+                                src={u.image}
+                                name={`${u.firstName}${u.lastName}`}
+                                description={u.email}
+                                size="lg"
+                                bordered
+                                color="gradient"
+                                />
                             ))
                             }
                         </>
-                    }
-
-                    </ul>
-                    <button onClick={handleClick}>Like {likes}</button>
+                    } 
+                    <Spacer y={8}/>
+                    <Button color="secondary" onClick={handleClick}>Like {likes}</Button>
+                    <Spacer y={4}/>
+                    <p>
+                        Read <Link href="/posts/first-post">this page!</Link>
+                    </p>
                     <div className={styles.grid}>
                         <a href="https://nextjs.org/docs" className={styles.card}>
                             <h3>Documentation &rarr;</h3>
