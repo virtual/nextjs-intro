@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from 'react'
 import Head from 'next/head';
 import Layout, {siteTitle} from "../components/layout";
 import Link from 'next/link';
+import { Button, Container, Grid, Input, Spacer, User, Row, Loading } from "@nextui-org/react";
 import styles from '../styles/Home.module.css';
 import utilStyles from '../styles/utils.module.css';
+import { useLazyQuery, useQuery } from '@apollo/client';
+
+import GET_USERS from '/graphql/queries/getUsers.gql'
+import SEARCH_USERS from '/graphql/queries/searchUsers.gql'
 
 function createTitle(title) {
     if (title) {
@@ -20,8 +25,39 @@ function Header({ title }) {
 export default function HomePage() {
     // setLikes function to update
     const [likes, setLikes] = useState(0);
+    const [users, setUsers] = useState([])
+    const [searchValue, setSearchValue] = useState('')
 
-    const names = ['Ada Lovelace', 'Grace Hopper', 'Margaret Hamilton'];
+    const usersRef = useRef(null)
+
+    const { data, loading, error } = useQuery(GET_USERS)
+
+    const [getSearchedUsers] = useLazyQuery(SEARCH_USERS, {
+        fetchPolicy: 'network-only',
+        onCompleted(data) {
+            setUsers(data.searchUser)
+        }
+    })
+
+    useEffect(() => {
+        if (data) {
+            setUsers(data.users)
+            usersRef.current = data.users
+        }
+    }, [data])
+
+    const searchUser = () => {
+        getSearchedUsers({
+            variables: {
+                value: searchValue
+            }
+        })
+    }
+    
+    if (error) {
+        console.error(error)
+        return null
+    }    
 
     function handleClick() {
         setLikes(likes + 1)
@@ -38,20 +74,39 @@ export default function HomePage() {
                 <Header title="React 💙" />
                 <section className={utilStyles.headingMd}>
                     <p>Mister Cat likes to read books about dogs and birds.</p>
-                    <p>
-                    (This is a sample website - you’ll be building a site like this on{' '}
-                    <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
-                    </p>
                 </section>
                 <main>
-                    <div>Homepage!</div>
+                    <h2>Search for a user</h2>
+                    <Input
+                        clearable
+                        labelPlaceholder="User"
+                        onClearClick={() => setUsers(usersRef.current)}
+                        initialValue={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
+                        />
+                    <Button color="gradient" auto onClick={() => searchUser()}>
+                        Search users
+                    </Button> 
+
                     <p>
                         Read <Link href="/posts/first-post">this page!</Link>
                     </p>
                     <ul>
-                        {names.map((name, key) => (
-                            <li data-id={key} key={key}>{name}</li>
-                        ))}
+       
+                    {loading
+                        ?
+                            Loading
+                        :
+                        <>
+                            {users.map(u => (
+                                <li data-id={u.id}>
+                                    {u.firstName} {u.lastName}
+                                </li>
+                            ))
+                            }
+                        </>
+                    }
+
                     </ul>
                     <button onClick={handleClick}>Like {likes}</button>
                     <div className={styles.grid}>

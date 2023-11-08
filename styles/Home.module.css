@@ -32,8 +32,9 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
+    flex-direction: row;
 
-    max-width: 800px;
+    max-width: 1200px;
     margin-top: 3rem;
 }
 
