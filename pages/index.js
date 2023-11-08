@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Head from 'next/head';
 import Layout, {siteTitle} from "../components/layout";
 import Link from 'next/link';
-import { Button, Container, Grid, Input, Spacer, User, Row, Loading } from "@nextui-org/react";
+import { Button, Input, Spinner, Skeleton } from "@nextui-org/react";
 import styles from '../styles/Home.module.css';
 import utilStyles from '../styles/utils.module.css';
 import { useLazyQuery, useQuery } from '@apollo/client';
@@ -12,7 +12,7 @@ import SEARCH_USERS from '/graphql/queries/searchUsers.gql'
 
 function createTitle(title) {
     if (title) {
-        return `Cool ${title}`;
+        return `${title}`;
     } else {
         return 'Mew title';
     }
@@ -64,19 +64,18 @@ export default function HomePage() {
     }
 
     return (
-        <Layout home>
+        <Layout home>            
             <div className={styles.container}>
                 <Head>
                     <title>{siteTitle}</title>
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
-                <Header />
                 <Header title="React 💙" />
                 <section className={utilStyles.headingMd}>
                     <p>Mister Cat likes to read books about dogs and birds.</p>
                 </section>
                 <main>
-                    <h2>Search for a user</h2>
+                    <h2>Search for a user</h2>             
                     <Input
                         clearable
                         labelPlaceholder="User"
@@ -84,10 +83,9 @@ export default function HomePage() {
                         initialValue={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
                         />
-                    <Button color="gradient" auto onClick={() => searchUser()}>
+                    <Button color="primary" onClick={() => searchUser()}>
                         Search users
-                    </Button> 
-
+                    </Button>   
                     <p>
                         Read <Link href="/posts/first-post">this page!</Link>
                     </p>
@@ -95,7 +93,7 @@ export default function HomePage() {
        
                     {loading
                         ?
-                            Loading
+                            <Spinner />
                         :
                         <>
                             {users.map(u => (
