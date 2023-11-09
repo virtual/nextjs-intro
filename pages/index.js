@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Head from 'next/head';
 import Layout, {siteTitle} from "../components/layout";
 import Link from 'next/link';
-import { Button, Input, Spinner, Skeleton, User, Spacer } from "@nextui-org/react";
+import { Button, Card, Input, Spinner, Skeleton, User, Spacer } from "@nextui-org/react";
 import styles from '../styles/Home.module.css';
 import utilStyles from '../styles/utils.module.css';
 import { useLazyQuery, useQuery } from '@apollo/client';
@@ -27,6 +27,7 @@ export default function HomePage() {
     const [likes, setLikes] = useState(0);
     const [users, setUsers] = useState([])
     const [searchValue, setSearchValue] = useState('')
+    const [searchTerm, setSearchTerm] = useState('')
 
     const usersRef = useRef(null)
 
@@ -52,6 +53,7 @@ export default function HomePage() {
                 value: searchValue
             }
         })
+        setSearchTerm(searchValue)
     }
 
     if (error) {
@@ -98,9 +100,22 @@ export default function HomePage() {
 
                     {loading
                         ?
-                            <Spinner />
+                        <div className="max-w-[300px] w-full flex items-center gap-3">
+                            <div>
+                                <Skeleton className="flex rounded-full w-12 h-12"/>
+                            </div>
+                            <div className="w-full flex flex-col gap-2">
+                                <Skeleton className="h-3 w-3/5 rounded-lg"/>
+                                <Skeleton className="h-3 w-4/5 rounded-lg"/>
+                            </div>
+                        </div>
                         :
                         <>
+                            {searchTerm &&
+                                <div className="w-full flex flex-col gap-2 font-bold pb-3">
+                                    Search item: {searchTerm}
+                                </div>
+                            }
                             {users.map(u => (
                                 <User
                                 key={u.id}
