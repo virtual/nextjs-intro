@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Head from 'next/head';
 import Layout, {siteTitle} from "../components/layout";
 import Link from 'next/link';
-import { Button, Input, Spinner, Skeleton } from "@nextui-org/react";
-import {User, Spacer} from "@nextui-org/react";
+import { Button, Input, Spinner, Skeleton, User, Spacer } from "@nextui-org/react";
 import styles from '../styles/Home.module.css';
 import utilStyles from '../styles/utils.module.css';
 import { useLazyQuery, useQuery } from '@apollo/client';
@@ -54,18 +53,18 @@ export default function HomePage() {
             }
         })
     }
-    
+
     if (error) {
         console.error(error)
         return null
-    }    
+    }
 
     function handleClick() {
         setLikes(likes + 1)
     }
 
     return (
-        <Layout home>            
+        <Layout home>
             <div className={styles.container}>
                 <Head>
                     <title>{siteTitle}</title>
@@ -78,7 +77,7 @@ export default function HomePage() {
 
                 <Spacer y={10}/>
                 <main>
-                    <div className="flex w-full flex-nowrap md:flex-nowrap">        
+                    <div className="flex w-full flex-nowrap md:flex-nowrap">
                         <Input
                             size="sm"
                             clearable
@@ -91,11 +90,12 @@ export default function HomePage() {
                             />
                         <Button color="primary" size="lg" onClick={() => searchUser()}>
                             Search users
-                        </Button>   
+                        </Button>
                     </div>
-                    
+
+
                     <Spacer y={8}/>
-       
+
                     {loading
                         ?
                             <Spinner />
@@ -107,13 +107,13 @@ export default function HomePage() {
                                 avatarProps={{
                                     src: `${u.image}`
                                 }}
-                                name={`${u.firstName}${u.lastName}`}
+                                name={`${u.firstName} ${u.lastName} ${u.bloodGroup}`}
                                 description={u.email}
                                 />
                             ))
                             }
                         </>
-                    } 
+                    }
                     <Spacer y={8}/>
                     <Button color="secondary" onClick={handleClick}>Like {likes}</Button>
                     <Spacer y={4}/>

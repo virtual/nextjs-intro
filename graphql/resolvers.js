@@ -12,7 +12,9 @@ const resolvers = {
                         lastName: u.lastName,
                         email: u.email,
                         username: u.username,
-                        image: u.image
+                        image: u.image,
+                        bloodGroup: u.bloodGroup,
+                        height: u.height
                     }
                 })
             } catch (error) {
@@ -31,7 +33,9 @@ const resolvers = {
                         lastName: u.lastName,
                         email: u.email,
                         username: u.username,
-                        image: u.image
+                        image: u.image,
+                        bloodGroup: u.bloodGroup,
+                        height: u.height
                     }
                 })
             } catch (error) {

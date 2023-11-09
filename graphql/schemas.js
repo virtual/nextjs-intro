@@ -13,6 +13,8 @@ const typeDefs = gql`
     email: String
     username: String
     image: String
+    bloodGroup: String
+    height: Int
   }
 `
 export default typeDefs
